@@ -8,56 +8,76 @@ public class InputManager {
     private  static final Scanner sc = new Scanner(System.in);
 
     public static int inputInt(String message) {
+        while (true) {
+            System.out.print(message);
+            try {
+                int result = Integer.parseInt(sc.nextLine().trim());
 
-        System.out.print(message);
-        int result = sc.nextInt();
-
-        if (result > 0) {
-            return result;
+                if (result > 0) {
+                    return result;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("잘못된 입력입니다.");
+            }
         }
-
-        System.out.println("잘못된 입력입니다.");
-        return inputInt(message);
     }
 
     public static Long inputLong(List<Long> ids, String message) {
-        System.out.print(message);
-        Long result = sc.nextLong();
+        while (true) {
+            System.out.print(message);
+            try {
+                Long result = Long.parseLong(sc.nextLine().trim());
 
-        if (ids.contains(result)) {
-            return result;
+                if (ids.contains(result)) {
+                    return result;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("잘못된 입력입니다.");
+            }
         }
-
-        System.out.println("잘못된 입력입니다.");
-        return inputLong(ids, message);
     }
 
     public static BigDecimal inputMoney(String message) {
-        System.out.print(message);
-        BigDecimal result = sc.nextBigDecimal();
+        while (true) {
+            try {
+                System.out.print(message);
+                BigDecimal result = new BigDecimal(sc.nextLine().trim());
 
-        if (result.compareTo(BigDecimal.ZERO) >= 0) {
-            return result;
+                if (result.compareTo(BigDecimal.ZERO) >= 0) {
+                    return result;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("잘못된 입력입니다.");
+            }
         }
 
-        System.out.println("잘못된 입력입니다.");
-        return inputMoney(message);
+
     }
 
     public static BigDecimal inputMoney(BigDecimal amount, String message) {
-        System.out.print(message);
-        BigDecimal result = sc.nextBigDecimal();
+        while (true) {
+            System.out.print(message);
+            try {
+                BigDecimal result = new BigDecimal(sc.nextLine().trim());
 
-        if (result.compareTo(BigDecimal.ZERO) >= 0 && result.compareTo(amount) <= 0) {
-            return result;
+                if (result.compareTo(BigDecimal.ZERO) >= 0 && result.compareTo(amount) <= 0) {
+                    return result;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("잔액이 부족합니다.");
+            }
         }
-
-        System.out.println("잔액이 부족합니다.");
-        return inputMoney(amount, message);
     }
 
     public static String inputString(String message) {
-        System.out.print(message);
-        return sc.next();
+        while (true) {
+            System.out.print(message);
+            String result = sc.nextLine().trim();
+
+            if (!result.isEmpty()) {
+                return result;
+            }
+            System.out.println("잘못된 입력입니다.");
+        }
     }
 }
