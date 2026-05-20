@@ -39,8 +39,8 @@ public class InputManager {
 
     public static BigDecimal inputMoney(String message) {
         while (true) {
+            System.out.print(message);
             try {
-                System.out.print(message);
                 BigDecimal result = new BigDecimal(sc.nextLine().trim());
 
                 if (result.compareTo(BigDecimal.ZERO) >= 0) {
