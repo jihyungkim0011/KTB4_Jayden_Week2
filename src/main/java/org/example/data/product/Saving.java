@@ -18,15 +18,11 @@ public class Saving extends Product{
         return savingId;
     }
 
-    public void setSavingId(Long savingId) {
-        this.savingId = savingId;
-    }
-
     public BigDecimal getPrincipal() {
         return principal;
     }
 
-    public void setPrincipal(BigDecimal principal) {
-        this.principal = principal;
+    public void incrementSavingId(Long savingId) {
+        this.savingId = savingId;
     }
 }

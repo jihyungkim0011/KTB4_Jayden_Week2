@@ -18,15 +18,11 @@ public class Loan extends Product {
         return loanId;
     }
 
-    public void setLoanId(Long loanId) {
-        this.loanId = loanId;
-    }
-
     public BigDecimal getPrincipal() {
         return principal;
     }
 
-    public void setPrincipal(BigDecimal principal) {
-        this.principal = principal;
+    public void incrementLoanId(Long loanId) {
+        this.loanId = loanId;
     }
 }

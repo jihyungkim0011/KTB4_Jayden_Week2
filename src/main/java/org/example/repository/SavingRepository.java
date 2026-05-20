@@ -13,7 +13,7 @@ public class SavingRepository {
     private static long sequence = 0L;
 
     public Saving save(Saving saving) {
-        saving.setSavingId(++sequence);
+        saving.incrementSavingId(++sequence);
         store.put(saving.getSavingId(), saving);
         return saving;
     }

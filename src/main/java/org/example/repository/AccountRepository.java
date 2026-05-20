@@ -11,7 +11,7 @@ public class AccountRepository {
     private static long sequence = 0L;
 
     public Account save(Account account) {
-        account.setAccountId(++sequence);
+        account.incrementAccountId(++sequence);
         store.put(account.getAccountId(), account);
         return account;
     }
@@ -27,14 +27,14 @@ public class AccountRepository {
     public void addMoney(Long accountId, BigDecimal money) {
         Account account = findById(accountId);
         BigDecimal amount = account.getAmount();
-        account.setAmount(amount.add(money));
+        account.changeAmount(amount.add(money));
         store.put(accountId, account);
     }
 
     public void withdraw(Long accountId, BigDecimal money) {
         Account account = findById(accountId);
         BigDecimal amount = account.getAmount();
-        account.setAmount(amount.subtract(money));
+        account.changeAmount(amount.subtract(money));
         store.put(accountId, account);
     }
 }

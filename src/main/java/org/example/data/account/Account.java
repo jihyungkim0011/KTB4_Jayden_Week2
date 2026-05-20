@@ -22,31 +22,23 @@ public class Account extends FinancialContract {
         return accountId;
     }
 
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
     public String getAccountName() {
         return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
     }
 
     public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void incrementAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
+    public void changeAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 }

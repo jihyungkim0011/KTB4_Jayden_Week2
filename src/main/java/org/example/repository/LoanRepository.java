@@ -13,7 +13,7 @@ public class LoanRepository {
     private static long sequence = 0L;
 
     public Loan save(Loan loan) {
-        loan.setLoanId(++sequence);
+        loan.incrementLoanId(++sequence);
         store.put(loan.getLoanId(), loan);
         return loan;
     }
