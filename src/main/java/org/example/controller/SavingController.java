@@ -84,7 +84,7 @@ public class SavingController extends Controller{
                 savings.stream()
                         .map(Saving::getSavingId)
                         .toList(),
-                "계좌를 선택하세요."
+                "계좌를 선택하세요. 번호선택: "
         );
 
         Saving findSaving = savingRepository.findById(savingId);

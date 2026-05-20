@@ -84,7 +84,7 @@ public class LoanController extends Controller{
                 loans.stream()
                         .map(Loan::getLoanId)
                         .toList(),
-                "대출 목록을 선택하세요."
+                "대출 목록을 선택하세요. 번호선택: "
         );
 
         Loan findLoanId = loanRepository.findById(loanId);

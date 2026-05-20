@@ -84,7 +84,7 @@ public class AccountController extends Controller {
                 accounts.stream()
                         .map(Account::getAccountId)
                         .toList(),
-                "계좌를 선택하세요."
+                "계좌를 선택하세요. 번호선택: "
         );
 
         BigDecimal money = InputManager.inputMoney("입금할 금액을 입력해주세요: ");
@@ -112,7 +112,7 @@ public class AccountController extends Controller {
                 accounts.stream()
                         .map(Account::getAccountId)
                         .toList(),
-                "계좌를 선택하세요."
+                "계좌를 선택하세요. 번호선택: "
         );
 
         BigDecimal amount = accountRepository.findById(accountId).getAmount();
@@ -141,7 +141,7 @@ public class AccountController extends Controller {
                 accounts.stream()
                         .map(Account::getAccountId)
                         .toList(),
-                "계좌를 선택하세요."
+                "계좌를 선택하세요. 번호선택: "
         );
 
         BigDecimal amount = accountRepository.findById(accountId).getAmount();
