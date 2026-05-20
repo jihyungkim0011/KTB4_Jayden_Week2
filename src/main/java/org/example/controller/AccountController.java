@@ -13,6 +13,12 @@ import java.util.Map;
 public class AccountController extends Controller {
     private final AccountRepository accountRepository = new AccountRepository();
 
+    private final Map<Integer, String> menuMap = Map.of(
+            1, "계좌개설",
+            2, "입금",
+            3, "출금",
+            4, "이체"
+    );
     private final Map<Integer, Runnable> methodMap = Map.of(
             1, this::join,
             2, this::addMoney,
@@ -27,10 +33,10 @@ public class AccountController extends Controller {
         System.out.println("도움받고자 하는 메뉴를 선택해주세요.");
         System.out.println();
         System.out.println();
-        System.out.println("[1] 계좌개설");
-        System.out.println("[2] 입금");
-        System.out.println("[3] 출금");
-        System.out.println("[4] 이체");
+        menuMap.entrySet().stream()
+                .forEach(entry -> {
+                    System.out.println("[" + entry.getKey() + "] " + entry.getValue());
+                });
         System.out.println();
         System.out.println();
 

@@ -15,6 +15,10 @@ import java.util.Map;
 public class LoanController extends Controller{
     private final LoanRepository loanRepository = new LoanRepository();
 
+    private final Map<Integer, String> menuMap = Map.of(
+            1, "대출받기",
+            2, "조회"
+    );
     private final Map<Integer, Runnable> methodMap = Map.of(
             1, this::join,
             2, this::getLoanSpec
@@ -27,8 +31,10 @@ public class LoanController extends Controller{
         System.out.println("도움받고자 하는 메뉴를 선택해주세요.");
         System.out.println();
         System.out.println();
-        System.out.println("[1] 대출받기");
-        System.out.println("[2] 조회");
+        menuMap.entrySet().stream()
+                .forEach(entry -> {
+                    System.out.println("[" + entry.getKey() + "] " + entry.getValue());
+                });
         System.out.println();
         System.out.println();
 

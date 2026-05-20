@@ -4,9 +4,18 @@ import org.example.adapter.ListAdapter;
 import org.example.controller.NavigationController;
 import org.example.utils.InputManager;
 
+import java.util.Map;
+
 
 public class Home {
     private final ListAdapter listAdapter = new ListAdapter();
+
+    private final Map<Integer, String> menuMap = Map.of(
+            1, "내 계좌/입출금",
+            2, "대출",
+            3, "예금",
+            4, "종료"
+    );
 
     public void home() {
         System.out.println("====================================");
@@ -21,11 +30,10 @@ public class Home {
         System.out.println("무엇을 도와드릴까요?");
         System.out.println();
         System.out.println();
-
-        System.out.println("[1] 내 계좌/입출금");
-        System.out.println("[2] 대출");
-        System.out.println("[3] 예금");
-        System.out.println("[4] 종료");
+        menuMap.entrySet().stream()
+                .forEach(entry -> {
+                    System.out.println("[" + entry.getKey() + "] " + entry.getValue());
+                });
         System.out.println();
         System.out.println();
 

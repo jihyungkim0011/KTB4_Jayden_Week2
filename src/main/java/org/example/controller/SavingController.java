@@ -14,6 +14,10 @@ import java.util.Map;
 public class SavingController extends Controller{
     private final SavingRepository savingRepository = new SavingRepository();
 
+    private final Map<Integer, String> menuMap = Map.of(
+            1, "계좌개설",
+            2, "조회"
+    );
     private final Map<Integer, Runnable> methodMap = Map.of(
             1, this::join,
             2, this::getSavingSpec
@@ -26,8 +30,10 @@ public class SavingController extends Controller{
         System.out.println("도움받고자 하는 메뉴를 선택해주세요.");
         System.out.println();
         System.out.println();
-        System.out.println("[1] 계좌개설");
-        System.out.println("[2] 조회");
+        menuMap.entrySet().stream()
+                .forEach(entry -> {
+                    System.out.println("[" + entry.getKey() + "] " + entry.getValue());
+                });
         System.out.println();
         System.out.println();
 
