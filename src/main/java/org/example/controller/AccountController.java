@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 
 public class AccountController extends Controller {
     private final AccountRepository accountRepository = new AccountRepository();
-    ExecutorService executor = new LoggingExecutorService().getLoggingExecutor();
+    private final ExecutorService executor = new LoggingExecutorService().getLoggingExecutor();
 
     private final Map<Integer, String> menuMap = new TreeMap<>(Map.of(
             1, "계좌개설",
