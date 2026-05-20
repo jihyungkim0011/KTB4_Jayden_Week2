@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.controller.Controller;
 import org.example.adapter.ListAdapter;
+import org.example.controller.NavigationController;
 import org.example.utils.InputManager;
 
 
@@ -43,7 +43,7 @@ public class Home {
 
     private void shutDownIfNumberIs4(int number) {
         if (number == 4) {
-            new Controller().shutDown();
+            NavigationController.shutDown();
         }
     }
 }

@@ -72,7 +72,7 @@ public class AccountController extends Controller {
         System.out.println("개설일: " + savedAccount.getCreatedAt().truncatedTo(ChronoUnit.DAYS));
         System.out.println();
 
-        super.returnHomeList();
+        NavigationController.returnHomeList();
     }
 
     private void addMoney() {
@@ -100,7 +100,7 @@ public class AccountController extends Controller {
         System.out.println();
         System.out.println("계좌 잔액: " + findAccount.getAmount());
 
-        super.returnHomeList();
+        NavigationController.returnHomeList();
     }
 
     private void withdraw() {
@@ -129,7 +129,7 @@ public class AccountController extends Controller {
         System.out.println();
         System.out.println("계좌 잔액: " + findAccount.getAmount());
 
-        super.returnHomeList();
+        NavigationController.returnHomeList();
     }
 
     private void transfer() {
@@ -163,7 +163,7 @@ public class AccountController extends Controller {
         System.out.println("이체액: " + money);
         System.out.println("계좌 잔액: " + findAccount.getAmount());
 
-        super.returnHomeList();
+        NavigationController.returnHomeList();
     }
 
     private Account saveAccount(String userName, String accountName, BigDecimal amount, LocalDateTime createdAt) {

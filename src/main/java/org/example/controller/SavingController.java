@@ -77,7 +77,7 @@ public class SavingController extends Controller{
         System.out.println("이자 금액: " + interest);
         System.out.println("만료시 금액: " + savedSavingProduct.getPrincipal().add(interest));
 
-        super.returnHomeList();
+        NavigationController.returnHomeList();
     }
 
     private void getSavingSpec() {
@@ -112,7 +112,7 @@ public class SavingController extends Controller{
         System.out.println("이자 금액: " + interest);
         System.out.println("만료시 금액: " + findSaving.getPrincipal().add(interest));
 
-        super.returnHomeList();
+        NavigationController.returnHomeList();
     }
 
     private Saving saveSavingProduct(String userName, String productName, LocalDateTime createdAt, int duration, BigDecimal principal) {

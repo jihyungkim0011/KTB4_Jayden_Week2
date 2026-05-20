@@ -77,7 +77,7 @@ public class LoanController extends Controller{
         BigDecimal interest = InterestCalculator.calculateLoanInterest(savedLoanAccount.getPrincipal(), Saving.ANNUAL_RATE);
         System.out.println("월이자 금액: " + interest);
 
-        super.returnHomeList();
+        NavigationController.returnHomeList();
     }
 
     private void getLoanSpec() {
@@ -111,7 +111,7 @@ public class LoanController extends Controller{
         BigDecimal interest = InterestCalculator.calculateLoanInterest(findLoanId.getPrincipal(), Saving.ANNUAL_RATE);
         System.out.println("월이자 금액: " + interest);
 
-        super.returnHomeList();
+        NavigationController.returnHomeList();
     }
 
     private Loan saveLoanProduct(String userName, String productName, LocalDateTime createdAt, int duration, BigDecimal principal) {

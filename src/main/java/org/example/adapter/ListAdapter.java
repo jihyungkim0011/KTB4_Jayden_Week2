@@ -1,9 +1,6 @@
 package org.example.adapter;
 
-import org.example.controller.AccountController;
-import org.example.controller.Controller;
-import org.example.controller.LoanController;
-import org.example.controller.SavingController;
+import org.example.controller.*;
 
 import java.util.Map;
 
@@ -12,10 +9,10 @@ public class ListAdapter {
             1, new AccountController(),
             2, new LoanController(),
             3, new SavingController(),
-            4, new Controller()
+            4, new NavigationController()
     );
 
     public Controller getController(int number) {
-        return controllerMap.getOrDefault(number, new Controller());
+        return controllerMap.getOrDefault(number, new NavigationController());
     }
 }
