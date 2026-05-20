@@ -11,14 +11,15 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class LoanController extends Controller{
     private final LoanRepository loanRepository = new LoanRepository();
 
-    private final Map<Integer, String> menuMap = Map.of(
+    private final Map<Integer, String> menuMap = new TreeMap<>(Map.of(
             1, "대출받기",
             2, "조회"
-    );
+    ));
     private final Map<Integer, Runnable> methodMap = Map.of(
             1, this::join,
             2, this::getLoanSpec
@@ -31,10 +32,7 @@ public class LoanController extends Controller{
         System.out.println("도움받고자 하는 메뉴를 선택해주세요.");
         System.out.println();
         System.out.println();
-        menuMap.entrySet().stream()
-                .forEach(entry -> {
-                    System.out.println("[" + entry.getKey() + "] " + entry.getValue());
-                });
+        menuMap.forEach((key, value) -> System.out.println("[" + key + "] " + value));
         System.out.println();
         System.out.println();
 

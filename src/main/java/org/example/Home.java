@@ -5,17 +5,18 @@ import org.example.controller.NavigationController;
 import org.example.utils.InputManager;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 
 public class Home {
     private final ListAdapter listAdapter = new ListAdapter();
 
-    private final Map<Integer, String> menuMap = Map.of(
+    private final Map<Integer, String> menuMap = new TreeMap<>(Map.of(
             1, "내 계좌/입출금",
             2, "대출",
             3, "예금",
             4, "종료"
-    );
+    ));
 
     public void home() {
         System.out.println("====================================");
@@ -30,10 +31,7 @@ public class Home {
         System.out.println("무엇을 도와드릴까요?");
         System.out.println();
         System.out.println();
-        menuMap.entrySet().stream()
-                .forEach(entry -> {
-                    System.out.println("[" + entry.getKey() + "] " + entry.getValue());
-                });
+        menuMap.forEach((key, value) -> System.out.println("[" + key + "] " + value));
         System.out.println();
         System.out.println();
 
