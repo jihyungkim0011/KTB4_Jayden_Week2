@@ -165,6 +165,11 @@ public class AccountController extends Controller {
     }
 
     private void readAccountList(List<Account> accounts) {
+        if (accounts.isEmpty()) {
+            System.out.println("계좌가 없습니다. 이전 메뉴로 돌아갑니다.");
+            this.run();
+        }
+
         accounts.forEach(account -> System.out.println("[" + account.getAccountId() + "] " + account.getAccountName()));
         System.out.println();
     }

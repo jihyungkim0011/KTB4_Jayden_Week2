@@ -110,6 +110,11 @@ public class LoanController extends Controller{
     }
 
     private void readProductList(List<Loan> loans) {
+        if (loans.isEmpty()) {
+            System.out.println("받으신 대출이 없습니다. 이전 메뉴로 돌아갑니다.");
+            this.run();
+        }
+
         loans.forEach(loan -> System.out.println("[" + loan.getLoanId() + "] " + loan.getProductName() + ", 연이자: " + Loan.ANNUAL_RATE));
         System.out.println();
     }

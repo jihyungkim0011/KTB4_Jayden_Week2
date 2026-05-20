@@ -111,6 +111,11 @@ public class SavingController extends Controller{
     }
 
     private void readProductList(List<Saving> savings) {
+        if (savings.isEmpty()) {
+            System.out.println("계좌가 없습니다. 이전 메뉴로 돌아갑니다.");
+            this.run();
+        }
+
         savings.forEach(saving -> System.out.println("[" + saving.getSavingId() + "] " + saving.getProductName() + ", 연이율: " + Saving.ANNUAL_RATE));
         System.out.println();
     }
