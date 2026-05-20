@@ -11,11 +11,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 public class LoanController extends Controller{
     private final LoanRepository loanRepository = new LoanRepository();
-    private final Scanner sc = new Scanner(System.in);
 
     private final Map<Integer, Runnable> methodMap = Map.of(
             1, this::join,
@@ -34,7 +32,7 @@ public class LoanController extends Controller{
         System.out.println();
         System.out.println();
 
-        int number = InputManager.inputInt();
+        int number = InputManager.inputInt("번호 선택: ");
         System.out.println(number + "번을 선택하셨습니다.");
 
         getService(number);
@@ -49,19 +47,12 @@ public class LoanController extends Controller{
 
     private void join() {
         System.out.println("==========================");
-        System.out.println("[1] 계좌개설을 선택하셨습니다.");
+        System.out.println("[1] 대출받기를 선택하셨습니다.");
 
-        System.out.print("계좌명을 입력해주세요: ");
-        String productName = sc.next();
-
-        System.out.print("사용자명을 입력해주세요: ");
-        String userName = sc.next();
-
+        String productName = InputManager.inputString("계좌명을 입력해주세요: ");
+        String userName = InputManager.inputString("사용자명을 입력해주세요: ");
         BigDecimal principal = InputManager.inputMoney("대출받을 금액을 입력해주세요: ");
-
-        System.out.print("원하시는 만기 개월을 입력해주세요: ");
-        int duration = InputManager.inputInt();
-
+        int duration = InputManager.inputInt("원하시는 만기 개월을 입력해주세요: ");
         LocalDateTime createdAt = LocalDateTime.now();
 
         Loan savedLoanAccount = saveLoanProduct(userName, productName, createdAt, duration, principal);
@@ -89,11 +80,11 @@ public class LoanController extends Controller{
         List<Loan> loans = loanRepository.findAll();
         readProductList(loans);
 
-        System.out.println("대출 목록을 선택하세요.");
         Long loanId = InputManager.inputLong(
                 loans.stream()
                         .map(Loan::getLoanId)
-                        .toList()
+                        .toList(),
+                "대출 목록을 선택하세요."
         );
 
         Loan findLoanId = loanRepository.findById(loanId);

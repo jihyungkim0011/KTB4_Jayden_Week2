@@ -9,11 +9,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 public class AccountController extends Controller {
     private final AccountRepository accountRepository = new AccountRepository();
-    private final Scanner sc = new Scanner(System.in);
 
     private final Map<Integer, Runnable> methodMap = Map.of(
             1, this::join,
@@ -36,7 +34,7 @@ public class AccountController extends Controller {
         System.out.println();
         System.out.println();
 
-        int number = InputManager.inputInt();
+        int number = InputManager.inputInt("번호 선택: ");
         System.out.println(number + "번을 선택하셨습니다.");
 
         getService(number);
@@ -53,12 +51,8 @@ public class AccountController extends Controller {
         System.out.println("==========================");
         System.out.println("[1] 계좌개설을 선택하셨습니다.");
 
-        System.out.print("계좌명을 입력해주세요: ");
-        String accountName = sc.next();
-
-        System.out.print("사용자명을 입력해주세요: ");
-        String userName = sc.next();
-
+        String accountName = InputManager.inputString("계좌명을 입력해주세요: ");
+        String userName = InputManager.inputString("사용자명을 입력해주세요: ");
         BigDecimal money = InputManager.inputMoney("초기 입금할 금액을 입력해주세요: ");
 
         LocalDateTime createdAt = LocalDateTime.now();
@@ -75,6 +69,8 @@ public class AccountController extends Controller {
         NavigationController.returnHomeList();
     }
 
+
+
     private void addMoney() {
         System.out.println("==========================");
         System.out.println("[2] 입금을 선택하셨습니다.");
@@ -84,11 +80,11 @@ public class AccountController extends Controller {
         List<Account> accounts = accountRepository.findAll();
         readAccountList(accounts);
 
-        System.out.println("계좌를 선택하세요.");
         Long accountId = InputManager.inputLong(
                 accounts.stream()
                         .map(Account::getAccountId)
-                        .toList()
+                        .toList(),
+                "계좌를 선택하세요."
         );
 
         BigDecimal money = InputManager.inputMoney("입금할 금액을 입력해주세요: ");
@@ -112,14 +108,14 @@ public class AccountController extends Controller {
         List<Account> accounts = accountRepository.findAll();
         readAccountList(accounts);
 
-        System.out.println("계좌를 선택하세요.");
         Long accountId = InputManager.inputLong(
                 accounts.stream()
                         .map(Account::getAccountId)
-                        .toList()
+                        .toList(),
+                "계좌를 선택하세요."
         );
-        BigDecimal amount = accountRepository.findById(accountId).getAmount();
 
+        BigDecimal amount = accountRepository.findById(accountId).getAmount();
         BigDecimal money = InputManager.inputMoney(amount, "출금할 금액을 입력해주세요: ");
 
         accountRepository.withdraw(accountId, money);
@@ -141,17 +137,15 @@ public class AccountController extends Controller {
         List<Account> accounts = accountRepository.findAll();
         readAccountList(accounts);
 
-        System.out.println("계좌를 선택하세요.");
         Long accountId = InputManager.inputLong(
                 accounts.stream()
                         .map(Account::getAccountId)
-                        .toList()
+                        .toList(),
+                "계좌를 선택하세요."
         );
+
         BigDecimal amount = accountRepository.findById(accountId).getAmount();
-
-        System.out.print("계좌명을 입력해주세요: ");
-        String toUser = sc.next();
-
+        String toUser = InputManager.inputString("계좌명을 입력해주세요: ");
         BigDecimal money = InputManager.inputMoney(amount, "이체할 금액을 입력해주세요: ");
 
         accountRepository.withdraw(accountId, money);

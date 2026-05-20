@@ -29,7 +29,7 @@ public class Home {
         System.out.println();
         System.out.println();
 
-        int number = InputManager.inputInt();
+        int number = InputManager.inputInt("번호 선택: ");
         System.out.println(number + " 번을 선택하셨습니다.");
 
         getService(number);

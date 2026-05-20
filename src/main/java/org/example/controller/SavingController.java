@@ -10,11 +10,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 public class SavingController extends Controller{
     private final SavingRepository savingRepository = new SavingRepository();
-    private final Scanner sc = new Scanner(System.in);
 
     private final Map<Integer, Runnable> methodMap = Map.of(
             1, this::join,
@@ -33,7 +31,7 @@ public class SavingController extends Controller{
         System.out.println();
         System.out.println();
 
-        int number = InputManager.inputInt();
+        int number = InputManager.inputInt("번호 선택: ");
         System.out.println(number + "번을 선택하셨습니다.");
 
         getService(number);
@@ -50,17 +48,10 @@ public class SavingController extends Controller{
         System.out.println("==========================");
         System.out.println("[1] 계좌개설을 선택하셨습니다.");
 
-        System.out.print("계좌명을 입력해주세요: ");
-        String productName = sc.next();
-
-        System.out.print("사용자명을 입력해주세요: ");
-        String userName = sc.next();
-
+        String productName = InputManager.inputString("계좌명을 입력해주세요: ");
+        String userName = InputManager.inputString("사용자명을 입력해주세요: ");
         BigDecimal principal = InputManager.inputMoney("초기 입금할 금액을 입력해주세요: ");
-
-        System.out.print("원하시는 만기 개월을 입력해주세요: ");
-        int duration = InputManager.inputInt();
-
+        int duration = InputManager.inputInt("원하시는 만기 개월을 입력해주세요: ");
         LocalDateTime createdAt = LocalDateTime.now();
 
         Saving savedSavingProduct = saveSavingProduct(userName, productName, createdAt, duration, principal);
@@ -89,11 +80,11 @@ public class SavingController extends Controller{
         List<Saving> savings = savingRepository.findAll();
         readProductList(savings);
 
-        System.out.println("계좌를 선택하세요.");
         Long savingId = InputManager.inputLong(
                 savings.stream()
                         .map(Saving::getSavingId)
-                        .toList()
+                        .toList(),
+                "계좌를 선택하세요."
         );
 
         Saving findSaving = savingRepository.findById(savingId);
