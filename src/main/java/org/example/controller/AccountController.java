@@ -62,11 +62,16 @@ public class AccountController extends Controller {
         String accountName = InputManager.inputString("계좌명을 입력해주세요: ");
         String userName = InputManager.inputString("사용자명을 입력해주세요: ");
         BigDecimal money = InputManager.inputMoney("초기 입금할 금액을 입력해주세요: ");
-
         LocalDateTime createdAt = LocalDateTime.now();
-
         Account savedAccount = saveAccount(userName, accountName, money, createdAt);
 
+        executeLogging(savedAccount);
+        executeResultView(savedAccount, "개설이 완료되었습니다.");
+
+        NavigationController.returnHomeList();
+    }
+
+    private void executeLogging(Account savedAccount) {
         executor.execute(() -> Logging.printLog(
                 LocalDateTime.now(),
                 Thread.currentThread().getName(),
@@ -76,16 +81,17 @@ public class AccountController extends Controller {
                 Thread.currentThread().getStackTrace()[1].getMethodName(),
                 savedAccount.getAmount()
         ));
+    }
+
+    private void executeResultView(Account account, String message) {
         executor.execute(() -> {
             System.out.println(Thread.currentThread().getName());
-            System.out.println("개설이 완료되었습니다.");
-            System.out.println("계좌명: " + savedAccount.getAccountName());
-            System.out.println("사용자명: " + savedAccount.getUserName());
-            System.out.println("잔액: " + savedAccount.getAmount());
-            System.out.println("개설일: " + savedAccount.getCreatedAt().truncatedTo(ChronoUnit.DAYS));
+            System.out.println(message);
+            System.out.println("계좌명: " + account.getAccountName());
+            System.out.println("사용자명: " + account.getUserName());
+            System.out.println("잔액: " + account.getAmount());
+            System.out.println("개설일: " + account.getCreatedAt().truncatedTo(ChronoUnit.DAYS));
             System.out.println();
-
-            NavigationController.returnHomeList();
         });
     }
 
@@ -111,9 +117,8 @@ public class AccountController extends Controller {
         accountRepository.addMoney(accountId, money);
         Account findAccount = accountRepository.findById(accountId);
 
-        System.out.println("입금이 완료되었습니다.");
-        System.out.println();
-        System.out.println("계좌 잔액: " + findAccount.getAmount());
+        executeLogging(findAccount);
+        executeResultView(findAccount, "입금이 완료되었습니다.");
 
         NavigationController.returnHomeList();
     }
