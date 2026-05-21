@@ -4,9 +4,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class LoggingExecutorService {
-    private final ExecutorService loggingExecutor = Executors.newFixedThreadPool(2);
+    private static final ExecutorService loggingExecutor = Executors.newFixedThreadPool(2);
 
-    public ExecutorService getLoggingExecutor() {
+    public static ExecutorService getLoggingExecutor() {
         return loggingExecutor;
     }
 }
