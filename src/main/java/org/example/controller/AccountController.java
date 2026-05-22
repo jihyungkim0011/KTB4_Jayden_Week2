@@ -1,7 +1,10 @@
 package org.example.controller;
 
 import org.example.data.account.Account;
+import org.example.executor.InteractionExecutorService;
 import org.example.executor.LoggingExecutorService;
+import org.example.executor.interaction.ComputerBehavior;
+import org.example.executor.interaction.UserBehavior;
 import org.example.executor.loggingrunnable.LoggingRunnableAccount;
 import org.example.repository.AccountRepository;
 import org.example.utils.InputManager;
@@ -16,19 +19,22 @@ import java.util.concurrent.ExecutorService;
 
 public class AccountController extends Controller {
     private final AccountRepository accountRepository = new AccountRepository();
-    private final ExecutorService executor = LoggingExecutorService.getLoggingExecutor();
+    private final ExecutorService loggingExecutor = LoggingExecutorService.getLoggingExecutor();
+    private final ExecutorService interactionExecutor = InteractionExecutorService.getInteractionExecutor();
 
     private final Map<Integer, String> menuMap = new TreeMap<>(Map.of(
             1, "계좌개설",
             2, "입금",
             3, "출금",
-            4, "이체"
+            4, "이체",
+            5, "거래 시뮬레이션"
     ));
     private final Map<Integer, Runnable> methodMap = Map.of(
             1, this::join,
             2, this::addMoney,
             3, this::withdraw,
-            4, this::transfer
+            4, this::transfer,
+            5, this::simulateTransaction
     );
 
     @Override
@@ -91,8 +97,6 @@ public class AccountController extends Controller {
 
         executeLogging(findAccount, this.getClass().getName(),  Thread.currentThread().getStackTrace()[1].getMethodName());
         resultView(findAccount, "입금이 완료되었습니다.");
-
-        NavigationController.returnHomeList();
     }
 
     private void withdraw() {
@@ -145,15 +149,36 @@ public class AccountController extends Controller {
         Account findAccount = accountRepository.findById(accountId);
 
         executeLogging(findAccount, this.getClass().getName(),  Thread.currentThread().getStackTrace()[1].getMethodName());
-        resultView(findAccount, "이체가 완료되었습니다.");
         System.out.println("받은 사람: " + toUser);
         System.out.println("이체액: " + money);
-
-        NavigationController.returnHomeList();
+        resultView(findAccount, "이체가 완료되었습니다.");
     }
 
+    public void simulateTransaction() {
+        System.out.println("==========================");
+        System.out.println("[5] 거래 시뮬레이션을 선택하셨습니다.");
+        System.out.println();
+        System.out.println();
+
+        List<Account> accounts = accountRepository.findAll();
+        readAccountList(accounts);
+
+        Long accountId = InputManager.inputLong(
+                accounts.stream()
+                        .map(Account::getAccountId)
+                        .toList(),
+                "계좌를 선택하세요. 번호선택: "
+        );
+        Account findAccount = accountRepository.findById(accountId);
+
+        interactionExecutor.execute(new ComputerBehavior(findAccount, accountRepository));
+        new UserBehavior(findAccount, accountRepository).run();
+        //TODO - 메인 스레드에 리턴메뉴 신호 보내기
+    }
+
+
     private void executeLogging(Account account, String className, String methodName) {
-        executor.execute(new LoggingRunnableAccount(account, className, methodName));
+        loggingExecutor.execute(new LoggingRunnableAccount(account, className, methodName));
     }
 
     private void resultView(Account account, String message) {

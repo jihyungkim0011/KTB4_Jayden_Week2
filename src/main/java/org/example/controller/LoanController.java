@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutorService;
 
 public class LoanController extends Controller{
     private final LoanRepository loanRepository = new LoanRepository();
-    private final ExecutorService executor = LoggingExecutorService.getLoggingExecutor();
+    private final ExecutorService loggingExecutor = LoggingExecutorService.getLoggingExecutor();
 
     private final Map<Integer, String> menuMap = new TreeMap<>(Map.of(
             1, "대출받기",
@@ -92,7 +92,7 @@ public class LoanController extends Controller{
     }
 
     private void executeLogging(Loan savedLoanAccount, String className, String methodName) {
-        executor.execute(new LoggingRunnableLoan(savedLoanAccount, className, methodName));
+        loggingExecutor.execute(new LoggingRunnableLoan(savedLoanAccount, className, methodName));
     }
 
     private void resultView(Loan savedLoanAccount, String message) {

@@ -3,11 +3,14 @@ package org.example.repository;
 import org.example.data.account.Account;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AccountRepository {
 
-    private static final Map<Long, Account> store = new HashMap<>();
+    private static final Map<Long, Account> store = new ConcurrentHashMap<>(); //TEMP//
     private static long sequence = 0L;
 
     public Account save(Account account) {

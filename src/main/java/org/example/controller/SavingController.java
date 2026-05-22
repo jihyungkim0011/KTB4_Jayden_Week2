@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 
 public class SavingController extends Controller{
     private final SavingRepository savingRepository = new SavingRepository();
-    private final ExecutorService executor = LoggingExecutorService.getLoggingExecutor();
+    private final ExecutorService loggingExecutor = LoggingExecutorService.getLoggingExecutor();
 
     private final Map<Integer, String> menuMap = new TreeMap<>(Map.of(
             1, "계좌개설",
@@ -91,7 +91,7 @@ public class SavingController extends Controller{
     }
 
     private void executeLogging(Saving savedSavingProduct, String className, String methodName) {
-        executor.execute(new LoggingRunnableSaving(savedSavingProduct, className, methodName));
+        loggingExecutor.execute(new LoggingRunnableSaving(savedSavingProduct, className, methodName));
     }
 
     private static void resultView(Saving savedSavingProduct, String message) {
