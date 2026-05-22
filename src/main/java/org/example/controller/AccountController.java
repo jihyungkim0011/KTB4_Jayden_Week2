@@ -2,7 +2,7 @@ package org.example.controller;
 
 import org.example.data.account.Account;
 import org.example.executor.LoggingExecutorService;
-import org.example.executor.logging.Logging;
+import org.example.executor.LoggingRunnableAccount;
 import org.example.repository.AccountRepository;
 import org.example.utils.InputManager;
 
@@ -65,33 +65,9 @@ public class AccountController extends Controller {
         LocalDateTime createdAt = LocalDateTime.now();
         Account savedAccount = saveAccount(userName, accountName, money, createdAt);
 
-        executeLogging(savedAccount, Thread.currentThread().getStackTrace()[1].getMethodName());
-        ResultView(savedAccount, "개설이 완료되었습니다.");
+        executeLogging(savedAccount, this.getClass().getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
+        resultView(savedAccount, "개설이 완료되었습니다.");
     }
-
-    private void executeLogging(Account account, String methodName) {
-        executor.execute(() -> Logging.printLog(
-                Thread.currentThread().getName(),
-                account.getUserName(),
-                account.getAccountId(),
-                account.getAccountName(),
-                methodName,
-                account.getAmount()
-        ));
-    }
-
-    private void ResultView(Account account, String message) {
-        System.out.println(Thread.currentThread().getName());
-        System.out.println(message);
-        System.out.println("계좌명: " + account.getAccountName());
-        System.out.println("사용자명: " + account.getUserName());
-        System.out.println("잔액: " + account.getAmount());
-        System.out.println("개설일: " + account.getCreatedAt().truncatedTo(ChronoUnit.DAYS));
-        System.out.println();
-
-        NavigationController.returnHomeList();
-    }
-
 
     private void addMoney() {
         System.out.println("==========================");
@@ -108,14 +84,13 @@ public class AccountController extends Controller {
                         .toList(),
                 "계좌를 선택하세요. 번호선택: "
         );
-
         BigDecimal money = InputManager.inputMoney("입금할 금액을 입력해주세요: ");
 
         accountRepository.addMoney(accountId, money);
         Account findAccount = accountRepository.findById(accountId);
 
-        executeLogging(findAccount, Thread.currentThread().getStackTrace()[1].getMethodName());
-        ResultView(findAccount, "입금이 완료되었습니다.");
+        executeLogging(findAccount, this.getClass().getName(),  Thread.currentThread().getStackTrace()[1].getMethodName());
+        resultView(findAccount, "입금이 완료되었습니다.");
 
         NavigationController.returnHomeList();
     }
@@ -142,11 +117,8 @@ public class AccountController extends Controller {
         accountRepository.withdraw(accountId, money);
         Account findAccount = accountRepository.findById(accountId);
 
-        System.out.println("출금이 완료되었습니다.");
-        System.out.println();
-        System.out.println("계좌 잔액: " + findAccount.getAmount());
-
-        NavigationController.returnHomeList();
+        executeLogging(findAccount, this.getClass().getName(),  Thread.currentThread().getStackTrace()[1].getMethodName());
+        resultView(findAccount, "출금이 완료되었습니다.");
     }
 
     private void transfer() {
@@ -172,11 +144,25 @@ public class AccountController extends Controller {
         accountRepository.withdraw(accountId, money);
         Account findAccount = accountRepository.findById(accountId);
 
-        System.out.println("이체가 완료되었습니다.");
-        System.out.println();
+        executeLogging(findAccount, this.getClass().getName(),  Thread.currentThread().getStackTrace()[1].getMethodName());
+        resultView(findAccount, "이체가 완료되었습니다.");
         System.out.println("받은 사람: " + toUser);
         System.out.println("이체액: " + money);
-        System.out.println("계좌 잔액: " + findAccount.getAmount());
+
+        NavigationController.returnHomeList();
+    }
+
+    private void executeLogging(Account account, String className, String methodName) {
+        executor.execute(new LoggingRunnableAccount(account, className, methodName));
+    }
+
+    private void resultView(Account account, String message) {
+        System.out.println(message);
+        System.out.println("계좌명: " + account.getAccountName());
+        System.out.println("사용자명: " + account.getUserName());
+        System.out.println("잔액: " + account.getAmount());
+        System.out.println("개설일: " + account.getCreatedAt().truncatedTo(ChronoUnit.DAYS));
+        System.out.println();
 
         NavigationController.returnHomeList();
     }

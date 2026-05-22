@@ -2,6 +2,8 @@ package org.example.controller;
 
 import org.example.data.product.Loan;
 import org.example.data.product.Saving;
+import org.example.executor.LoggingExecutorService;
+import org.example.executor.LoggingRunnableLoan;
 import org.example.repository.LoanRepository;
 import org.example.utils.InputManager;
 import org.example.utils.InterestCalculator;
@@ -12,9 +14,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
 
 public class LoanController extends Controller{
     private final LoanRepository loanRepository = new LoanRepository();
+    private final ExecutorService executor = LoggingExecutorService.getLoggingExecutor();
 
     private final Map<Integer, String> menuMap = new TreeMap<>(Map.of(
             1, "대출받기",
@@ -61,18 +65,8 @@ public class LoanController extends Controller{
 
         Loan savedLoanAccount = saveLoanProduct(userName, productName, createdAt, duration, principal);
 
-        System.out.println();
-        System.out.println("계좌명: " + savedLoanAccount.getProductName());
-        System.out.println("사용자명: " + savedLoanAccount.getUserName());
-        System.out.println("대출액: " + savedLoanAccount.getPrincipal());
-
-        System.out.println("가입일: " + savedLoanAccount.getCreatedAt().truncatedTo(ChronoUnit.DAYS));
-        System.out.println("만기일: " + savedLoanAccount.getCreatedAt().plusMonths(savedLoanAccount.getDuration()).truncatedTo(ChronoUnit.DAYS));
-
-        BigDecimal interest = InterestCalculator.calculateLoanInterest(savedLoanAccount.getPrincipal(), Saving.ANNUAL_RATE);
-        System.out.println("월이자 금액: " + interest);
-
-        NavigationController.returnHomeList();
+        executeLogging(savedLoanAccount, this.getClass().getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
+        resultView(savedLoanAccount, "대출 신청이 완료되었습니다.");
     }
 
     private void getLoanSpec() {
@@ -93,17 +87,24 @@ public class LoanController extends Controller{
 
         Loan findLoanId = loanRepository.findById(loanId);
 
-        System.out.println();
-        System.out.println("계좌명: " + findLoanId.getProductName());
-        System.out.println("사용자명: " + findLoanId.getUserName());
-        System.out.println("대출액: " + findLoanId.getPrincipal());
+        executeLogging(findLoanId, this.getClass().getName(),  Thread.currentThread().getStackTrace()[1].getMethodName());
+        resultView(findLoanId, "선택하신 대출의 정보입니다.");
+    }
 
-        System.out.println("가입일: " + findLoanId.getCreatedAt().truncatedTo(ChronoUnit.DAYS));
-        System.out.println("만기일: " + findLoanId.getCreatedAt().plusMonths(findLoanId.getDuration()).truncatedTo(ChronoUnit.DAYS));
+    private void executeLogging(Loan savedLoanAccount, String className, String methodName) {
+        executor.execute(new LoggingRunnableLoan(savedLoanAccount, className, methodName));
+    }
 
-        System.out.println("연이자: " + Loan.ANNUAL_RATE + " %");
+    private void resultView(Loan savedLoanAccount, String message) {
+        System.out.println(message);
+        System.out.println("계좌명: " + savedLoanAccount.getProductName());
+        System.out.println("사용자명: " + savedLoanAccount.getUserName());
+        System.out.println("대출액: " + savedLoanAccount.getPrincipal());
 
-        BigDecimal interest = InterestCalculator.calculateLoanInterest(findLoanId.getPrincipal(), Saving.ANNUAL_RATE);
+        System.out.println("가입일: " + savedLoanAccount.getCreatedAt().truncatedTo(ChronoUnit.DAYS));
+        System.out.println("만기일: " + savedLoanAccount.getCreatedAt().plusMonths(savedLoanAccount.getDuration()).truncatedTo(ChronoUnit.DAYS));
+
+        BigDecimal interest = InterestCalculator.calculateLoanInterest(savedLoanAccount.getPrincipal(), Saving.ANNUAL_RATE);
         System.out.println("월이자 금액: " + interest);
 
         NavigationController.returnHomeList();

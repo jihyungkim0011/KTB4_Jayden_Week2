@@ -1,6 +1,8 @@
 package org.example.controller;
 
 import org.example.data.product.Saving;
+import org.example.executor.LoggingExecutorService;
+import org.example.executor.LoggingRunnableSaving;
 import org.example.repository.SavingRepository;
 import org.example.utils.InputManager;
 import org.example.utils.InterestCalculator;
@@ -11,9 +13,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
 
 public class SavingController extends Controller{
     private final SavingRepository savingRepository = new SavingRepository();
+    private final ExecutorService executor = LoggingExecutorService.getLoggingExecutor();
 
     private final Map<Integer, String> menuMap = new TreeMap<>(Map.of(
             1, "계좌개설",
@@ -59,20 +63,9 @@ public class SavingController extends Controller{
         LocalDateTime createdAt = LocalDateTime.now();
 
         Saving savedSavingProduct = saveSavingProduct(userName, productName, createdAt, duration, principal);
-        System.out.println("계좌명: " + savedSavingProduct.getProductName());
-        System.out.println("사용자명: " + savedSavingProduct.getUserName());
-        System.out.println("입금액: " + savedSavingProduct.getPrincipal());
 
-        System.out.println("가입일: " + savedSavingProduct.getCreatedAt().truncatedTo(ChronoUnit.DAYS));
-        System.out.println("만기일: " + savedSavingProduct.getCreatedAt().plusMonths(savedSavingProduct.getDuration()).truncatedTo(ChronoUnit.DAYS));
-
-        System.out.println("연이율: " + Saving.ANNUAL_RATE + " %");
-
-        BigDecimal interest = InterestCalculator.calculateSavingInterest(savedSavingProduct.getPrincipal(), Saving.ANNUAL_RATE, duration);
-        System.out.println("이자 금액: " + interest);
-        System.out.println("만료시 금액: " + savedSavingProduct.getPrincipal().add(interest));
-
-        NavigationController.returnHomeList();
+        executeLogging(savedSavingProduct, this.getClass().getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
+        resultView(savedSavingProduct, "예금 가입이 완료되었습니다.");
     }
 
     private void getSavingSpec() {
@@ -93,19 +86,28 @@ public class SavingController extends Controller{
 
         Saving findSaving = savingRepository.findById(savingId);
 
-        System.out.println();
-        System.out.println("계좌명: " + findSaving.getProductName());
-        System.out.println("사용자명: " + findSaving.getUserName());
-        System.out.println("입금액: " + findSaving.getPrincipal());
+        executeLogging(findSaving, this.getClass().getName(),  Thread.currentThread().getStackTrace()[1].getMethodName());
+        resultView(findSaving, "선택하신 예금의 정보입니다.");
+    }
 
-        System.out.println("가입일: " + findSaving.getCreatedAt().truncatedTo(ChronoUnit.DAYS));
-        System.out.println("만기일: " + findSaving.getCreatedAt().plusMonths(findSaving.getDuration()).truncatedTo(ChronoUnit.DAYS));
+    private void executeLogging(Saving savedSavingProduct, String className, String methodName) {
+        executor.execute(new LoggingRunnableSaving(savedSavingProduct, className, methodName));
+    }
+
+    private static void resultView(Saving savedSavingProduct, String message) {
+        System.out.println(message);
+        System.out.println("계좌명: " + savedSavingProduct.getProductName());
+        System.out.println("사용자명: " + savedSavingProduct.getUserName());
+        System.out.println("입금액: " + savedSavingProduct.getPrincipal());
+
+        System.out.println("가입일: " + savedSavingProduct.getCreatedAt().truncatedTo(ChronoUnit.DAYS));
+        System.out.println("만기일: " + savedSavingProduct.getCreatedAt().plusMonths(savedSavingProduct.getDuration()).truncatedTo(ChronoUnit.DAYS));
 
         System.out.println("연이율: " + Saving.ANNUAL_RATE + " %");
 
-        BigDecimal interest = InterestCalculator.calculateSavingInterest(findSaving.getPrincipal(), Saving.ANNUAL_RATE, findSaving.getDuration());
+        BigDecimal interest = InterestCalculator.calculateSavingInterest(savedSavingProduct.getPrincipal(), Saving.ANNUAL_RATE, savedSavingProduct.getDuration());
         System.out.println("이자 금액: " + interest);
-        System.out.println("만료시 금액: " + findSaving.getPrincipal().add(interest));
+        System.out.println("만료시 금액: " + savedSavingProduct.getPrincipal().add(interest));
 
         NavigationController.returnHomeList();
     }
