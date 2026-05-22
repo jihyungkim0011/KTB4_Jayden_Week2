@@ -3,7 +3,7 @@ package org.example.controller;
 import org.example.data.product.Loan;
 import org.example.data.product.Saving;
 import org.example.executor.LoggingExecutorService;
-import org.example.executor.LoggingRunnableLoan;
+import org.example.executor.loggingrunnable.LoggingRunnableLoan;
 import org.example.repository.LoanRepository;
 import org.example.utils.InputManager;
 import org.example.utils.InterestCalculator;

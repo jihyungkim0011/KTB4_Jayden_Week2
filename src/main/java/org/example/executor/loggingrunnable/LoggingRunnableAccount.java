@@ -1,4 +1,4 @@
-package org.example.executor;
+package org.example.executor.loggingrunnable;
 
 import org.example.data.account.Account;
 import org.example.executor.logging.Logging;

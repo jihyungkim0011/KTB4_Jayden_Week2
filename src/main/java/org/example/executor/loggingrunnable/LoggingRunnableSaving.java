@@ -1,4 +1,4 @@
-package org.example.executor;
+package org.example.executor.loggingrunnable;
 
 import org.example.data.product.Saving;
 import org.example.executor.logging.Logging;
