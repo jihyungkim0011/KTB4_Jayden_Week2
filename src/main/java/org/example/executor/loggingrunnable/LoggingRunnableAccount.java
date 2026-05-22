@@ -16,14 +16,20 @@ public class LoggingRunnableAccount implements Runnable{
 
     @Override
     public void run() {
-        Logging.printLog(
-                Thread.currentThread().getName(),
-                account.getUserName(),
-                account.getAccountId(),
-                account.getAccountName(),
-                className,
-                methodName,
-                account.getAmount()
-        );
+        try {
+            Logging.printLog(
+                    Thread.currentThread().getName(),
+                    account.getUserName(),
+                    account.getAccountId(),
+                    account.getAccountName(),
+                    className,
+                    methodName,
+                    account.getAmount()
+            );
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+
+
     }
 }

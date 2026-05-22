@@ -16,14 +16,19 @@ public class LoggingRunnableSaving implements Runnable {
 
     @Override
     public void run() {
-        Logging.printLog(
-                Thread.currentThread().getName(),
-                saving.getUserName(),
-                saving.getSavingId(),
-                saving.getProductName(),
-                className,
-                methodName,
-                saving.getPrincipal()
-        );
+        try {
+            Logging.printLog(
+                    Thread.currentThread().getName(),
+                    saving.getUserName(),
+                    saving.getSavingId(),
+                    saving.getProductName(),
+                    className,
+                    methodName,
+                    saving.getPrincipal()
+            );
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }

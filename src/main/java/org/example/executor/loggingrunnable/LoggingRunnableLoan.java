@@ -16,14 +16,19 @@ public class LoggingRunnableLoan implements Runnable {
 
     @Override
     public void run() {
-        Logging.printLog(
-                Thread.currentThread().getName(),
-                loan.getUserName(),
-                loan.getLoanId(),
-                loan.getProductName(),
-                className,
-                methodName,
-                loan.getPrincipal()
-        );
+        try {
+            Logging.printLog(
+                    Thread.currentThread().getName(),
+                    loan.getUserName(),
+                    loan.getLoanId(),
+                    loan.getProductName(),
+                    className,
+                    methodName,
+                    loan.getPrincipal()
+            );
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }
