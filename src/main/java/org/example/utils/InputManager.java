@@ -72,12 +72,15 @@ public class InputManager {
     public static String inputString(String message) {
         while (true) {
             System.out.print(message);
-            String result = sc.nextLine().trim();
+            try {
+                String result = sc.nextLine().trim();
 
-            if (!result.isEmpty()) {
-                return result;
+                if (!result.isEmpty()) {
+                    return result;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("잘못된 입력입니다.");
             }
-            System.out.println("잘못된 입력입니다.");
         }
     }
 }
