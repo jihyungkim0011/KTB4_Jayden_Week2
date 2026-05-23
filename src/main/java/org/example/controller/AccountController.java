@@ -184,7 +184,6 @@ public class AccountController extends Controller {
         } catch (InterruptedException e) {
             NavigationController.returnHomeList();
         }
-        //TODO - 메인 스레드에 리턴메뉴 신호 보내기
     }
 
 
