@@ -9,6 +9,7 @@ import org.example.executor.loggingrunnable.LoggingRunnableAccount;
 import org.example.repository.AccountRepository;
 import org.example.utils.InputManager;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -171,8 +172,18 @@ public class AccountController extends Controller {
         );
         Account findAccount = accountRepository.findById(accountId);
 
-        interactionExecutor.execute(new ComputerBehavior(findAccount, accountRepository));
-        new UserBehavior(findAccount, accountRepository).run();
+        Thread mainThread = Thread.currentThread();
+        interactionExecutor.execute(() -> {
+            new ComputerBehavior(findAccount, accountRepository).run();
+            mainThread.interrupt();
+        });
+        try {
+            new UserBehavior(findAccount, accountRepository).run();
+        } catch (IOException e) {
+            throw new RuntimeException("simulateTransaction IOException: ", e);
+        } catch (InterruptedException e) {
+            NavigationController.returnHomeList();
+        }
         //TODO - 메인 스레드에 리턴메뉴 신호 보내기
     }
 

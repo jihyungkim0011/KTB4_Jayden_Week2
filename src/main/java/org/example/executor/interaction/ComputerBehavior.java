@@ -32,7 +32,7 @@ public class ComputerBehavior implements Runnable {
                 }
                 accountRepository.withdraw(account.getAccountId(), subscription);
 
-                executeLogging(account, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
+                executeLogging(account, this.getClass().getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
                 resultView(account, "구독료가 결제되었습니다.");
 
                 count++;
@@ -40,6 +40,8 @@ public class ComputerBehavior implements Runnable {
                 throw new RuntimeException("computerRunnable InterruptedException: ", e);
             }
         }
+        System.out.println();
+        System.out.println();
         System.out.println("구독료를 지불하지 못했습니다.");
         System.out.println("메뉴로 돌아갑니다.");
         System.out.println();
