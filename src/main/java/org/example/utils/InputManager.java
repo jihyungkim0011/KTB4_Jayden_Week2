@@ -9,7 +9,7 @@ public class InputManager {
 
     public static int inputInt(String message) {
         while (true) {
-            System.out.print(message);
+            System.out.println(message);
             try {
                 int result = Integer.parseInt(sc.nextLine().trim());
 
@@ -24,7 +24,7 @@ public class InputManager {
 
     public static Long inputLong(List<Long> ids, String message) {
         while (true) {
-            System.out.print(message);
+            System.out.println(message);
             try {
                 Long result = Long.parseLong(sc.nextLine().trim());
 
@@ -39,7 +39,7 @@ public class InputManager {
 
     public static BigDecimal inputMoney(String message) {
         while (true) {
-            System.out.print(message);
+            System.out.println(message);
             try {
                 BigDecimal result = new BigDecimal(sc.nextLine().trim());
 
@@ -56,7 +56,7 @@ public class InputManager {
 
     public static BigDecimal inputMoney(BigDecimal amount, String message) {
         while (true) {
-            System.out.print(message);
+            System.out.println(message);
             try {
                 BigDecimal result = new BigDecimal(sc.nextLine().trim());
 
@@ -71,15 +71,11 @@ public class InputManager {
 
     public static String inputString(String message) {
         while (true) {
-            System.out.print(message);
-            try {
-                String result = sc.nextLine().trim();
+            System.out.println(message);
+            String result = sc.nextLine().trim();
 
-                if (!result.isEmpty()) {
-                    return result;
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("잘못된 입력입니다.");
+            if (!result.isEmpty()) {
+                return result;
             }
         }
     }

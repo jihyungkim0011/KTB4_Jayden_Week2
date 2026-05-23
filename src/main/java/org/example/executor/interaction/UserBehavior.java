@@ -24,11 +24,11 @@ public class UserBehavior {
 
     public void run() throws IOException, InterruptedException {
         while (!Thread.currentThread().isInterrupted()) {
-
+            System.out.println("입금할 금액을 입력해주세요.");
             while (System.in.available() == 0) {
                 Thread.sleep(50);
             }
-            BigDecimal money = InputManager.inputMoney("입금할 금액을 입력해주세요: ");
+            BigDecimal money = InputManager.inputMoney("");
             accountRepository.addMoney(account.getAccountId(), money);
 
             executeLogging(account, this.getClass().getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
