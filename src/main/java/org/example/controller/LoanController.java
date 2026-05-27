@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import org.example.data.product.Loan;
-import org.example.data.product.Saving;
 import org.example.executor.LoggingExecutorService;
 import org.example.executor.loggingrunnable.LoggingRunnableLoan;
 import org.example.repository.LoanRepository;
@@ -104,7 +103,7 @@ public class LoanController extends Controller{
         System.out.println("가입일: " + savedLoanAccount.getCreatedAt().truncatedTo(ChronoUnit.DAYS));
         System.out.println("만기일: " + savedLoanAccount.getCreatedAt().plusMonths(savedLoanAccount.getDuration()).truncatedTo(ChronoUnit.DAYS));
 
-        BigDecimal interest = InterestCalculator.calculateLoanInterest(savedLoanAccount.getPrincipal(), Saving.ANNUAL_RATE);
+        BigDecimal interest = InterestCalculator.calculateLoanInterest(savedLoanAccount.getPrincipal(), Loan.ANNUAL_RATE);
         System.out.println("월이자 금액: " + interest);
 
         NavigationController.returnHomeList();
