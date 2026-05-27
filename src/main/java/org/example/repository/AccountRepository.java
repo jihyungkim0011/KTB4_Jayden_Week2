@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AccountRepository {
 
-    private static final Map<Long, Account> store = new ConcurrentHashMap<>(); //TEMP//
+    private static final Map<Long, Account> store = new ConcurrentHashMap<>();
     private static long sequence = 0L;
 
     public Account save(Account account) {
