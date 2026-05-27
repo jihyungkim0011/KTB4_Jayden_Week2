@@ -22,7 +22,7 @@ public class UserBehavior {
         this.accountRepository = accountRepository;
     }
 
-    public void run() throws IOException, InterruptedException {
+    public void simulateUser() throws IOException, InterruptedException {
         while (!Thread.currentThread().isInterrupted()) {
             System.out.println("입금할 금액을 입력해주세요.");
             while (System.in.available() == 0) {

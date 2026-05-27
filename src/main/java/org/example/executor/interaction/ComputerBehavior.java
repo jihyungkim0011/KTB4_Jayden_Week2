@@ -8,7 +8,7 @@ import org.example.repository.AccountRepository;
 import java.math.BigDecimal;
 import java.util.concurrent.ExecutorService;
 
-public class ComputerBehavior implements Runnable {
+public class ComputerBehavior {
     private int count = 0;
     private final Account account;
     private final AccountRepository accountRepository;
@@ -21,8 +21,7 @@ public class ComputerBehavior implements Runnable {
         this.accountRepository = accountRepository;
     }
 
-    @Override
-    public void run() {
+    public void simulateComputer() {
         while (count < 100) {
             try {
                 Thread.sleep(5_000);

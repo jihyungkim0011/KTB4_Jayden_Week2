@@ -174,11 +174,11 @@ public class AccountController extends Controller {
 
         Thread mainThread = Thread.currentThread();
         interactionExecutor.execute(() -> {
-            new ComputerBehavior(findAccount, accountRepository).run();
+            new ComputerBehavior(findAccount, accountRepository).simulateComputer();
             mainThread.interrupt();
         });
         try {
-            new UserBehavior(findAccount, accountRepository).run();
+            new UserBehavior(findAccount, accountRepository).simulateUser();
         } catch (IOException e) {
             throw new RuntimeException("simulateTransaction IOException: ", e);
         } catch (InterruptedException e) {
