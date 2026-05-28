@@ -38,7 +38,11 @@ public class Account extends FinancialContract {
         this.accountId = accountId;
     }
 
-    public void changeAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void deposit(BigDecimal amount, BigDecimal money) {
+        this.amount = amount.add(money);
+    }
+
+    public void withdraw(BigDecimal amount,  BigDecimal money) {
+        this.amount = amount.subtract(money);
     }
 }
