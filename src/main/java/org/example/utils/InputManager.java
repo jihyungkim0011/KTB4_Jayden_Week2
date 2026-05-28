@@ -62,9 +62,11 @@ public class InputManager {
 
                 if (result.compareTo(BigDecimal.ZERO) >= 0 && result.compareTo(amount) <= 0) {
                     return result;
+                } else {
+                    System.out.println("잘못된 입력입니다.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("잔액이 부족합니다.");
+                System.out.println("잘못된 입력입니다.");
             }
         }
     }
