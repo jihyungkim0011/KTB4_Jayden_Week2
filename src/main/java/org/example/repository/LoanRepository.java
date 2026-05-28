@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class LoanRepository {
 
-    private static final Map<Long, Loan> store = new HashMap<>();
-    private static long sequence = 0L;
+    private final Map<Long, Loan> store = new HashMap<>();
+    private long sequence = 0L;
 
     public Loan save(Loan loan) {
         loan.incrementLoanId(++sequence);

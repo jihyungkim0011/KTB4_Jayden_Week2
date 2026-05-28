@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class SavingRepository {
 
-    private static final Map<Long, Saving> store = new HashMap<>();
-    private static long sequence = 0L;
+    private final Map<Long, Saving> store = new HashMap<>();
+    private long sequence = 0L;
 
     public Saving save(Saving saving) {
         saving.incrementSavingId(++sequence);

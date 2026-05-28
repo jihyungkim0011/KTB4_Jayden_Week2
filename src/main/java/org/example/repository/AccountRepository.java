@@ -12,8 +12,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class AccountRepository {
 
-    private static final Map<Long, Account> store = new ConcurrentHashMap<>();
-    private static long sequence = 0L;
+    private final Map<Long, Account> store = new ConcurrentHashMap<>();
+    private long sequence = 0L;
 
     private final Lock lock = new ReentrantLock();
 
