@@ -41,7 +41,12 @@ public class ComputerBehavior {
         }
         System.out.println();
         System.out.println();
-        System.out.println("구독료를 지불하지 못했습니다.");
+        if (count < 100) {
+            System.out.println("구독료를 지불하지 못했습니다.");
+        } else {
+            System.out.println("구독료 100회 지불하셨습니다.");
+            System.out.println("거래 시뮬레이션을 성공적으로 마치셨습니다.");
+        }
         System.out.println("메뉴로 돌아갑니다.");
         System.out.println();
     }
